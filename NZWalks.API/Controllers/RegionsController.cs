@@ -64,5 +64,63 @@ namespace NZWalks.API.Controllers
             //return the DTO
             return Ok(regionDto);
         }
+
+        // Add Region
+        [HttpPost]
+        public IActionResult Create ([FromBody] AddRegionRequestDto addRegionRequest)
+        {
+            //map DTO to domain model
+            var regionDomainModel = new Region()
+            {
+                Name = addRegionRequest.Name,
+                Code = addRegionRequest.Code,
+                RegionImageUrl = addRegionRequest.RegionImageUrl
+            };
+            //save the region to the database
+            dbContext.Regions.Add(regionDomainModel);
+            dbContext.SaveChanges();
+
+
+            //map domain model back to DTO
+            var regionDto = new RegionDto
+            {
+                Id = regionDomainModel.Id,
+                Name = regionDomainModel.Name,
+                Code = regionDomainModel.Code,
+                RegionImageUrl = regionDomainModel.RegionImageUrl
+            };
+
+            //return the created region
+            return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
+        }
+
+        // Update Region
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
+        {
+            //Get the region from the database
+            var regionDomainModel = dbContext.Regions.FirstOrDefault(x => x.Id == id);
+            if (regionDomainModel == null)
+            {
+                return NotFound();
+            }
+            //map DTO to domain model
+            regionDomainModel.Name = updateRegionRequestDto.Name;
+            regionDomainModel.Code = updateRegionRequestDto.Code;
+            regionDomainModel.RegionImageUrl = updateRegionRequestDto.RegionImageUrl;
+            //save the changes to the database
+            dbContext.SaveChanges();
+            //map domain model back to DTO
+            var regionDto = new RegionDto()
+            {
+                Id = regionDomainModel.Id,
+                Name = regionDomainModel.Name,
+                Code = regionDomainModel.Code,
+                RegionImageUrl = regionDomainModel.RegionImageUrl
+            };
+            //return the updated region
+            return Ok(regionDto);
+        }
     }
 }
