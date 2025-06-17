@@ -62,4 +62,5 @@ namespace NZWalks.API.Repositories
             // Return the deleted region
             return existingRegion;
         }
+    }
 }
