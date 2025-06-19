@@ -142,6 +142,147 @@
         }
       }
     },
+    "/api/Walks": {
+      "post": {
+        "tags": [
+          "Walks"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWalkRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWalkRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWalkRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Walks"
+        ],
+        "parameters": [
+          {
+            "name": "filterOn",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filterQuery",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Walks/{id}": {
+      "get": {
+        "tags": [
+          "Walks"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Walks"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWalkRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWalkRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWalkRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Walks"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/WeatherForecast": {
       "get": {
         "tags": [
@@ -185,15 +326,21 @@
   "components": {
     "schemas": {
       "AddRegionRequestDto": {
+        "required": [
+          "code",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "code": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 3,
+            "minLength": 3,
+            "type": "string"
           },
           "regionImageUrl": {
             "type": "string",
@@ -202,20 +349,108 @@
         },
         "additionalProperties": false
       },
-      "UpdateRegionRequestDto": {
+      "AddWalkRequestDto": {
+        "required": [
+          "description",
+          "difficultyId",
+          "lengthInKm",
+          "name",
+          "regionId"
+        ],
         "type": "object",
         "properties": {
           "name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "lengthInKm": {
+            "maximum": 50,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "walkImageUrl": {
             "type": "string",
             "nullable": true
           },
-          "code": {
+          "regionId": {
             "type": "string",
-            "nullable": true
+            "format": "uuid"
+          },
+          "difficultyId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateRegionRequestDto": {
+        "required": [
+          "code",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "code": {
+            "maxLength": 3,
+            "minLength": 3,
+            "type": "string"
           },
           "regionImageUrl": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateWalkRequestDto": {
+        "required": [
+          "description",
+          "difficultyId",
+          "lengthInKm",
+          "name",
+          "regionId"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "lengthInKm": {
+            "maximum": 50,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "walkImageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "difficultyId": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "additionalProperties": false
