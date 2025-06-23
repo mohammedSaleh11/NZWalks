@@ -35,7 +35,7 @@ namespace NZWalks.API.Repositories
             //Sorting logic
             if(string.IsNullOrWhiteSpace(sortBy) == false)
             {
-                if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase)) 
                 {
                     walks = isAscending ? walks.OrderBy(x => x.Name) : walks.OrderByDescending(x => x.Name);
                 }
