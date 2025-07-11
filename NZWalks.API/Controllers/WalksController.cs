@@ -53,6 +53,10 @@ namespace NZWalks.API.Controllers
                 pageNumber,pageSize);
             //map domain model to DTOs 
             var walksDto = mapper.Map<List<WalkDto>>(walksDomain);
+
+            //create an exception
+
+            throw new Exception("This is a test exception for the exception handler middleware.");
             //return the DTOs
             return Ok(walksDto);
         }
